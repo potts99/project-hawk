@@ -5,3 +5,5 @@ Get all events in a channel ✅
 Get all events for a project ✅
 
 
+Authentication using a bearer token
+
