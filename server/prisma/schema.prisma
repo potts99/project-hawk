@@ -15,6 +15,7 @@ model Project {
   createdAt DateTime  @default(now())
   name      String    @unique
   channels  Channel[]
+  events    Events[]
 }
 
 model Channel {
@@ -22,7 +23,7 @@ model Channel {
   createdAt DateTime @default(now())
   name      String   @unique
   events    Events[]
-  
+
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId Int?
 }
@@ -35,4 +36,6 @@ model Events {
 
   Channel   Channel? @relation(fields: [channelId], references: [id])
   channelId Int?
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId Int?
 }

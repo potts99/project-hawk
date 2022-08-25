@@ -10,6 +10,9 @@ require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 
 // Routes
 const health = require("./src/routes/health");
+const projects = require("./src/routes/projects");
+const channels = require("./src/routes/channels");
+const events = require("./src/routes/events");
 
 const port = 5001;
 
@@ -23,6 +26,9 @@ app.use(cookieParser());
 
 // Express server api routes
 app.use("/api/v1/health", health);
+app.use("/api/v1/projects", projects);
+app.use("/api/v1/channels", channels);
+app.use("/api/v1/events", events);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
