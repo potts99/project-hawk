@@ -6,7 +6,6 @@ import {
   HomeIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 const navigation = [{ name: "T", href: "#", icon: HomeIcon, current: true }];
 
@@ -21,11 +20,16 @@ const innerNav = [
   { name: "Metrics", href: "#", current: false },
 ];
 
+const trunkNav = [
+  { name: "User sign up", href: "#", current: false },
+  { name: "Added to basket", href: "#", current: false },
+];
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function MainLayout() {
+export default function MainLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -167,7 +171,7 @@ export default function MainLayout() {
           </div>
           <div className="flex flex-col flex-grow border-r border-gray-200 pt-5 pb-4 bg-white overflow-y-auto">
             <div className="mt-5 flex-grow flex flex-col">
-              <nav className="flex-1 bg-white space-y-1" aria-label="Sidebar">
+              <nav className="flex-1 bg-white " aria-label="Sidebar">
                 <div className="mt-8">
                   {innerNav.map((item) => (
                     <a
@@ -186,6 +190,35 @@ export default function MainLayout() {
                     </a>
                   ))}
                 </div>
+
+                <div className="mt-32">
+                  <h3
+                    className="group flex items-center rounded-md px-4 mx-4 mt-2 py-2 font-bold text-md"
+                    id="projects-headline"
+                  >
+                    Trunk
+                  </h3>
+                  <div
+                    className="space-y-1"
+                    role="group"
+                    aria-labelledby="projects-headline"
+                  >
+                    {trunkNav.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className={classNames(
+                          item.current
+                            ? "bg-indigo-50 border-indigo-600 text-indigo-600"
+                            : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                          "group flex items-center rounded-md px-4 mx-4 mt-2 py-2 text-sm font-medium"
+                        )}
+                      >
+                        <span className="truncate">{item.name}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
               </nav>
             </div>
           </div>
@@ -203,7 +236,7 @@ export default function MainLayout() {
             </button>
             <div className="flex-1 px-4 flex justify-between">
               <div className="flex-1 flex">
-                <form className="w-full flex md:ml-0" action="#" method="GET">
+                {/* <form className="w-full flex md:ml-0" action="#" method="GET">
                   <label htmlFor="search-field" className="sr-only">
                     Search
                   </label>
@@ -222,7 +255,7 @@ export default function MainLayout() {
                       name="search"
                     />
                   </div>
-                </form>
+                </form> */}
               </div>
               <div className="ml-4 flex items-center md:ml-6">
                 <button
@@ -280,16 +313,7 @@ export default function MainLayout() {
           <main className="flex-1">
             <div className="py-6">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                <h1 className="text-2xl font-semibold text-gray-900">
-                  Dashboard
-                </h1>
-              </div>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                {/* Replace with your content */}
-                <div className="py-4">
-                  <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-                </div>
-                {/* /End replace */}
+                <div className="py-4">{children}</div>
               </div>
             </div>
           </main>
