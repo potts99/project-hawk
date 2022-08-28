@@ -3,7 +3,6 @@ import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   Bars3BottomLeftIcon,
   BellIcon,
-  HomeIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
@@ -18,10 +17,6 @@ const innerNav = [
   { name: "Metrics", href: "#", current: false },
 ];
 
-const trunkNav = [
-  { name: "User sign up", href: "#", current: false },
-  { name: "Added to basket", href: "#", current: false },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -31,6 +26,7 @@ export default function MainLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState();
+  const [trunks, setTrunks] = useState();
 
   async function fetchProjects() {
     await fetch(`http://localhost:5001/api/v1/projects/all`, {
@@ -39,14 +35,26 @@ export default function MainLayout({ children }) {
       .then((res) => res.json())
       .then((res) => {
         setProjects(res.projects);
+      });
+  }
 
-        setLoading(false);
+  async function fetchTrunks() {
+    await fetch(`http://localhost:5001/api/v1/channels/all`, {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setTrunks(res.channel);
       });
   }
 
   useEffect(() => {
-    fetchProjects();
+    Promise.all([fetchProjects(), fetchTrunks()]).then(() => {
+      // waits till all apis are finished bfore setting loading to false
+      setLoading(false);
+    });
   }, []);
+
 
   return (
     <>
@@ -202,7 +210,7 @@ export default function MainLayout({ children }) {
                       role="group"
                       aria-labelledby="projects-headline"
                     >
-                      {trunkNav.map((item) => (
+                      {trunks.map((item) => (
                         <a
                           key={item.name}
                           href={item.href}
