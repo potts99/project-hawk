@@ -104,7 +104,7 @@ export default function MainLayout({ children }) {
                             item.current
                               ? "bg-gray-100 text-gray-900"
                               : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                            "group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                            "group flex items-center justify-center h-8 w-8 rounded-full bg-gray-500"
                           )}
                         >
                           <item.icon
@@ -149,21 +149,14 @@ export default function MainLayout({ children }) {
                     href={item.href}
                     className={classNames(
                       item.current
-                        ? "bg-gray-100 text-gray-900"
+                        ? " text-gray-900"
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                      "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                      "group inline-flex items-center justify-center h-8 w-8 rounded-full mx-atuo px-6"
                     )}
                   >
-                    {/* <item.icon
-                      className={classNames(
-                        item.current
-                          ? "text-gray-500"
-                          : "text-gray-400 group-hover:text-gray-500",
-                        "mr-3 flex-shrink-0 h-6 w-6"
-                      )}
-                      aria-hidden="true"
-                    /> */}
-                    {item.name}
+                    <span className="text-lg font-medium leading-none">
+                      T
+                    </span>
                   </a>
                 ))}
               </nav>
