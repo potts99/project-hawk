@@ -13,11 +13,6 @@ const userNavigation = [
   { name: "Sign out", href: "#" },
 ];
 
-const innerNav = [
-  { name: "Feed", href: "#", current: true },
-  { name: "Metrics", href: "#", current: false },
-];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -25,12 +20,21 @@ function classNames(...classes) {
 export default function MainLayout({ children }) {
   const router = useRouter();
 
-  console.log(router);
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState();
   const [trunks, setTrunks] = useState();
+
+  const innerNav = [
+    { name: "Feed", href: `feed`, current: router.pathname.includes("/feed") },
+    {
+      name: "Metrics",
+      href: `metrics`,
+      current: router.pathname.includes("/metrics"),
+    },
+  ];
+
+  console.log(router);
 
   async function fetchProjects() {
     await fetch(`http://localhost:5001/api/v1/projects/all`, {
@@ -190,9 +194,12 @@ export default function MainLayout({ children }) {
               </div>
             </div>
             {router.pathname.includes("/[project]") && (
-              <div className="flex flex-col flex-grow border-r border-gray-200 pt-5 pb-4 bg-white overflow-y-auto">
-                <div className="mt-5 flex-grow flex flex-col">
-                  <nav className="flex-1 bg-white " aria-label="Sidebar">
+              <div className="flex flex-col flex-grow border-r border-gray-200 pt-4 pb-4 bg-white overflow-y-auto">
+                <div className="flex-grow flex flex-col">
+                  <nav className="flex-1 bg-white" aria-label="Sidebar">
+                    <div className="px-4 py-1 text-xl font-bold">
+                      <h1>Test</h1>
+                    </div>
                     <div className="mt-8">
                       {innerNav.map((item) => (
                         <a
