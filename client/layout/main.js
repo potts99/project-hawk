@@ -5,6 +5,7 @@ import {
   BellIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
 
 const userNavigation = [
   { name: "Your Profile", href: "#" },
@@ -17,12 +18,15 @@ const innerNav = [
   { name: "Metrics", href: "#", current: false },
 ];
 
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function MainLayout({ children }) {
+  const router = useRouter();
+
+  console.log(router);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState();
@@ -54,7 +58,6 @@ export default function MainLayout({ children }) {
       setLoading(false);
     });
   }, []);
-
 
   return (
     <>
@@ -113,11 +116,13 @@ export default function MainLayout({ children }) {
                       </div>
                     </Transition.Child>
                     <div className="flex-shrink-0 flex items-center px-4">
-                      <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                        alt="Workflow"
-                      />
+                      <a href="/">
+                        <img
+                          className="h-8 w-auto"
+                          src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
+                          alt="Workflow"
+                        />
+                      </a>
                     </div>
                     <div className="mt-5 flex-1 h-0 overflow-y-auto">
                       <nav className="px-2 space-y-1">
@@ -147,22 +152,30 @@ export default function MainLayout({ children }) {
           </Transition.Root>
 
           {/* Static sidebar for desktop */}
-          <div className="hidden md:flex md:w-80 md:flex-row md:fixed md:inset-y-0">
+          <div
+            className={
+              router.pathname.includes("/[project]")
+                ? "hidden md:flex md:w-80 md:flex-row md:fixed md:inset-y-0"
+                : "hidden md:flex md:w-30 md:flex-row md:fixed md:inset-y-0"
+            }
+          >
             {/* Sidebar component, swap this element with another sidebar if you like */}
             <div className="flex flex-col border-r border-gray-200 pt-5 bg-white overflow-y-auto w-20">
               <div className="flex items-center flex-shrink-0 px-4">
-                <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                  alt="Workflow"
-                />
+                <a href="/">
+                  <img
+                    className="h-8 w-auto"
+                    src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
+                    alt="Workflow"
+                  />
+                </a>
               </div>
               <div className="mt-5 flex-grow flex flex-col">
                 <nav className="flex-1 px-2 pb-4 space-y-1">
                   {projects.map((item) => (
                     <a
                       key={item.name}
-                      // href={item.name}
+                      href={`/${item.name}/feed`}
                       className={classNames(
                         item.current
                           ? " text-gray-900"
@@ -176,41 +189,12 @@ export default function MainLayout({ children }) {
                 </nav>
               </div>
             </div>
-            <div className="flex flex-col flex-grow border-r border-gray-200 pt-5 pb-4 bg-white overflow-y-auto">
-              <div className="mt-5 flex-grow flex flex-col">
-                <nav className="flex-1 bg-white " aria-label="Sidebar">
-                  <div className="mt-8">
-                    {innerNav.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-indigo-50 border-indigo-600 text-indigo-600"
-                            : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                          "group flex items-center rounded-md px-4 mx-4 mt-2 py-2 text-sm font-medium"
-                        )}
-                      >
-                        <span className="align-middle font-mono text-sm">
-                          {item.name}
-                        </span>
-                      </a>
-                    ))}
-                  </div>
-
-                  <div className="mt-32">
-                    <h3
-                      className="group flex items-center rounded-md px-4 mx-4 mt-2 py-2 font-bold text-md"
-                      id="projects-headline"
-                    >
-                      Trunk
-                    </h3>
-                    <div
-                      className="space-y-1"
-                      role="group"
-                      aria-labelledby="projects-headline"
-                    >
-                      {trunks.map((item) => (
+            {router.pathname.includes("/[project]") && (
+              <div className="flex flex-col flex-grow border-r border-gray-200 pt-5 pb-4 bg-white overflow-y-auto">
+                <div className="mt-5 flex-grow flex flex-col">
+                  <nav className="flex-1 bg-white " aria-label="Sidebar">
+                    <div className="mt-8">
+                      {innerNav.map((item) => (
                         <a
                           key={item.name}
                           href={item.href}
@@ -221,17 +205,54 @@ export default function MainLayout({ children }) {
                             "group flex items-center rounded-md px-4 mx-4 mt-2 py-2 text-sm font-medium"
                           )}
                         >
-                          <span className="truncate">{item.name}</span>
+                          <span className="align-middle font-mono text-sm">
+                            {item.name}
+                          </span>
                         </a>
                       ))}
                     </div>
-                  </div>
-                </nav>
+
+                    <div className="mt-32">
+                      <h3
+                        className="group flex items-center rounded-md px-4 mx-4 mt-2 py-2 font-bold text-md"
+                        id="projects-headline"
+                      >
+                        Trunk
+                      </h3>
+                      <div
+                        className="space-y-1"
+                        role="group"
+                        aria-labelledby="projects-headline"
+                      >
+                        {trunks.map((item) => (
+                          <a
+                            key={item.name}
+                            href={item.href}
+                            className={classNames(
+                              item.current
+                                ? "bg-indigo-50 border-indigo-600 text-indigo-600"
+                                : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                              "group flex items-center rounded-md px-4 mx-4 mt-2 py-2 text-sm font-medium"
+                            )}
+                          >
+                            <span className="truncate">{item.name}</span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </nav>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
-          <div className="flex flex-col flex-1 md:pl-80">
+          <div
+            className={
+              router.pathname.includes("/[project")
+                ? "flex flex-col flex-1 md:pl-80"
+                : "flex flex-col flex-1 md:pl-20"
+            }
+          >
             <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
               <button
                 type="button"
@@ -242,28 +263,7 @@ export default function MainLayout({ children }) {
                 <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
               </button>
               <div className="flex-1 px-4 flex justify-between">
-                <div className="flex-1 flex">
-                  {/* <form className="w-full flex md:ml-0" action="#" method="GET">
-                  <label htmlFor="search-field" className="sr-only">
-                    Search
-                  </label>
-                  <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                    <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
-                      <MagnifyingGlassIcon
-                        className="h-5 w-5"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <input
-                      id="search-field"
-                      className="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent sm:text-sm"
-                      placeholder="Search"
-                      type="search"
-                      name="search"
-                    />
-                  </div>
-                </form> */}
-                </div>
+                <div className="flex-1 flex"></div>
                 <div className="ml-4 flex items-center md:ml-6">
                   <button
                     type="button"
