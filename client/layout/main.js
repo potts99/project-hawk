@@ -34,7 +34,6 @@ export default function MainLayout({ children }) {
     },
   ];
 
-  console.log(router);
 
   async function fetchProjects() {
     await fetch(`http://localhost:5001/api/v1/projects/all`, {
@@ -224,7 +223,7 @@ export default function MainLayout({ children }) {
                         className="group flex items-center rounded-md px-4 mx-4 mt-2 py-2 font-bold text-md"
                         id="projects-headline"
                       >
-                        Trunk
+                        Channel
                       </h3>
                       <div
                         className="space-y-1"
@@ -234,7 +233,7 @@ export default function MainLayout({ children }) {
                         {trunks.map((item) => (
                           <a
                             key={item.name}
-                            href={item.href}
+                            href={`${item.name}`}
                             className={classNames(
                               item.current
                                 ? "bg-indigo-50 border-indigo-600 text-indigo-600"
