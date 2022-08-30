@@ -7,6 +7,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 
+import { PlusIcon as PlusIconMini } from "@heroicons/react/20/solid";
+import { PlusIcon as PlusIconOutline } from "@heroicons/react/24/outline";
+
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
@@ -33,7 +36,6 @@ export default function MainLayout({ children }) {
       current: router.pathname.includes("/metrics"),
     },
   ];
-
 
   async function fetchProjects() {
     await fetch(`http://localhost:5001/api/v1/projects/all`, {
@@ -163,8 +165,8 @@ export default function MainLayout({ children }) {
             }
           >
             {/* Sidebar component, swap this element with another sidebar if you like */}
-            <div className="flex flex-col border-r border-gray-200 pt-5 bg-white overflow-y-auto w-20">
-              <div className="flex items-center flex-shrink-0 px-4">
+            <div className="flex flex-col border-r border-gray-200 pt-5 bg-white overflow-y-auto w-20 items-center justify-center">
+              <div className="flex flex-shrink-0 px-2">
                 <a href="/">
                   <img
                     className="h-8 w-auto"
@@ -173,8 +175,8 @@ export default function MainLayout({ children }) {
                   />
                 </a>
               </div>
-              <div className="mt-5 flex-grow flex flex-col">
-                <nav className="flex-1 px-2 pb-4 space-y-1">
+              <div className="mt-5 flex-grow flex flex-col px-4">
+                <nav className="flex-1 pb-4 space-y-1">
                   {projects.map((item) => (
                     <a
                       key={item.name}
@@ -189,6 +191,15 @@ export default function MainLayout({ children }) {
                       {item.name[0]}
                     </a>
                   ))}
+                  <div className="pt-2 divide-y divide-gray-200">
+                    <button
+                      type="button"
+                      className="inline-flex ml-1 items-center rounded-full border border-transparent bg-indigo-600 p-2 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      onClick={() => router.push("/create")}
+                    >
+                      <PlusIconMini className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </div>
                 </nav>
               </div>
             </div>

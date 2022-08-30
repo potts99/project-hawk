@@ -6,11 +6,11 @@ exports.feed = async (req, res) => {
   try {
     const feed = await prisma.events.findMany({
       where: {
-        projectId: Number(id),
+        projectId: id,
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: "desc",
+      },
     });
 
     res.status(200).json({ success: true, feed });

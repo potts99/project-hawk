@@ -6,7 +6,7 @@ exports.create = async (req, res) => {
   try {
     const project = await prisma.project.create({
       data: {
-        name: name,
+        name,
       },
     });
 
