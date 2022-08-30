@@ -5,6 +5,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
+const socketio = require('socket.io');
 
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 
@@ -18,6 +19,7 @@ const port = 5001;
 
 // Express server libraries
 app.use(cors());
+app.options('*', cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,6 +32,7 @@ app.use("/api/v1/projects", projects);
 app.use("/api/v1/channels", channels);
 app.use("/api/v1/events", events);
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+

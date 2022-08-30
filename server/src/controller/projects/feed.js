@@ -8,6 +8,9 @@ exports.feed = async (req, res) => {
       where: {
         projectId: Number(id),
       },
+      orderBy: {
+        createdAt: 'desc'
+      }
     });
 
     res.status(200).json({ success: true, feed });
