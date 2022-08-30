@@ -4,12 +4,20 @@ exports.create = async (req, res) => {
   const { title, channel, description, project } = req.body;
 
   try {
+    const c = await prisma.channel.findUnique({
+      where: {
+        name: channel,
+      },
+    });
+
+    console.log(c)
+
     const event = await prisma.events.create({
       data: {
         title,
-        channelId: Number(channel),
+        channelId: c.id,
         description,
-        projectId: Number(project)
+        projectId: c.projectId,
       },
     });
 

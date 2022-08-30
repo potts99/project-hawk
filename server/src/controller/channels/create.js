@@ -1,13 +1,13 @@
 const { prisma } = require("../../../prisma/client");
 
 exports.create = async (req, res) => {
-  const { name, projectId } = req.body;
+  const { name, project } = req.body;
 
   try {
     const channel = await prisma.channel.create({
       data: {
         name: name,
-        projectId: Number(projectId),
+        projectId: project
       },
     });
 

@@ -32,8 +32,8 @@ model Channel {
   name      String   @unique
   events    Events[]
 
-  Project Project? @relation(fields: [project], references: [name])
-  project String?
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
 }
 
 model Events {
@@ -42,8 +42,8 @@ model Events {
   title       String
   description String
 
-  Channel Channel? @relation(fields: [channel], references: [id])
-  channel String?
-  Project Project? @relation(fields: [project], references: [name])
-  project String?
+  Channel   Channel? @relation(fields: [channelId], references: [id], onUpdate: Cascade)
+  channelId String?
+  Project   Project? @relation(fields: [projectId], references: [id], onUpdate: Cascade)
+  projectId String?
 }

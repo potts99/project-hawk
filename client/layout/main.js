@@ -48,21 +48,29 @@ export default function MainLayout({ children }) {
   }
 
   async function fetchTrunks() {
-    await fetch(`http://localhost:5001/api/v1/channels/all`, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setTrunks(res.channel);
-      });
+    if (router.query.project !== undefined) {
+      await fetch(
+        `http://localhost:5001/api/v1/channels/all/${router.query.project}`,
+        {
+          method: "GET",
+        }
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res)
+          setTrunks(res.channels);
+        });
+    }
   }
+
+  console.log(trunks)
 
   useEffect(() => {
     Promise.all([fetchProjects(), fetchTrunks()]).then(() => {
       // waits till all apis are finished bfore setting loading to false
       setLoading(false);
     });
-  }, []);
+  }, [router]);
 
   return (
     <>
@@ -180,7 +188,7 @@ export default function MainLayout({ children }) {
                   {projects.map((item) => (
                     <a
                       key={item.name}
-                      href={`/${item.name}/feed`}
+                      href={`/${item.id}/feed`}
                       className={classNames(
                         item.current
                           ? " text-gray-900"
@@ -230,21 +238,34 @@ export default function MainLayout({ children }) {
                     </div>
 
                     <div className="mt-32">
-                      <h3
-                        className="group flex items-center rounded-md px-4 mx-4 mt-2 py-2 font-bold text-md"
-                        id="projects-headline"
-                      >
-                        Channel
-                      </h3>
+                      <div className="flex flex-row justify-between">
+                        <h3
+                          className="group flex items-center rounded-md px-4 mx-4 mt-2 py-2 font-bold text-md"
+                          id="projects-headline"
+                        >
+                          Channel
+                        </h3>
+
+                        <button
+                          type="button"
+                          className="inline-flex items-center px-2 mt-2 mr-2
+                         hover:text-red-300 focus:outline-none "
+                        >
+                          <PlusIconMini
+                            className="h-5 w-5"
+                            aria-hidden="true"
+                          />
+                        </button>
+                      </div>
                       <div
                         className="space-y-1"
                         role="group"
                         aria-labelledby="projects-headline"
                       >
-                        {trunks.map((item) => (
+                        {trunks !== undefined && trunks.map((item) => (
                           <a
                             key={item.name}
-                            href={`${item.name}`}
+                            href={`${item.id}`}
                             className={classNames(
                               item.current
                                 ? "bg-indigo-50 border-indigo-600 text-indigo-600"
