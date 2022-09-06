@@ -8,7 +8,6 @@ import {
 import { useRouter } from "next/router";
 
 import { PlusIcon as PlusIconMini } from "@heroicons/react/20/solid";
-import { PlusIcon as PlusIconOutline } from "@heroicons/react/24/outline";
 
 const userNavigation = [
   { name: "Your Profile", href: "#" },
@@ -57,13 +56,13 @@ export default function MainLayout({ children }) {
       )
         .then((res) => res.json())
         .then((res) => {
-          console.log(res)
+          console.log(res);
           setTrunks(res.channels);
         });
     }
   }
 
-  console.log(trunks)
+  console.log(trunks);
 
   useEffect(() => {
     Promise.all([fetchProjects(), fetchTrunks()]).then(() => {
@@ -246,8 +245,8 @@ export default function MainLayout({ children }) {
                           Channel
                         </h3>
 
-                        <button
-                          type="button"
+                        <a
+                          href="create-channel"
                           className="inline-flex items-center px-2 mt-2 mr-2
                          hover:text-red-300 focus:outline-none "
                         >
@@ -255,27 +254,28 @@ export default function MainLayout({ children }) {
                             className="h-5 w-5"
                             aria-hidden="true"
                           />
-                        </button>
+                        </a>
                       </div>
                       <div
                         className="space-y-1"
                         role="group"
                         aria-labelledby="projects-headline"
                       >
-                        {trunks !== undefined && trunks.map((item) => (
-                          <a
-                            key={item.name}
-                            href={`${item.id}`}
-                            className={classNames(
-                              item.current
-                                ? "bg-indigo-50 border-indigo-600 text-indigo-600"
-                                : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                              "group flex items-center rounded-md px-4 mx-4 mt-2 py-2 text-sm font-medium"
-                            )}
-                          >
-                            <span className="truncate">{item.name}</span>
-                          </a>
-                        ))}
+                        {trunks !== undefined &&
+                          trunks.map((item) => (
+                            <a
+                              key={item.name}
+                              href={`${item.id}`}
+                              className={classNames(
+                                item.current
+                                  ? "bg-indigo-50 border-indigo-600 text-indigo-600"
+                                  : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                                "group flex items-center rounded-md px-4 mx-4 mt-2 py-2 text-sm font-medium"
+                              )}
+                            >
+                              <span className="truncate">{item.name}</span>
+                            </a>
+                          ))}
                       </div>
                     </div>
                   </nav>
